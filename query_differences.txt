@@ -1,612 +1,264 @@
-Line 5:
-filtered_preds.sql: SELECT AVG( singer.age ) , MIN( singer.age ) , MAX( singer.age ) FROM singer WHERE singer.country = 'France'
-filtered_dev.sql: SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
---------------------------------------------------
-Line 6:
+Line 6 (wrong key spelling):
 filtered_preds.sql: SELECT AVG( singer.age ) , MIN( singer.age ) , MAX( singer.age ) FROM singer WHERE singer.country = 'French'
 filtered_dev.sql: SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
 --------------------------------------------------
-Line 15:
-filtered_preds.sql: SELECT stadium.location , stadium.name FROM stadium WHERE stadium.capacity BETWEEN 5000 and 10000
-filtered_dev.sql: SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000
---------------------------------------------------
-Line 16:
+Line 16 (wrong column selection):
 filtered_preds.sql: SELECT stadium.location , stadium.capacity FROM stadium WHERE stadium.capacity BETWEEN 5000 and 10000
 filtered_dev.sql: SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000
 --------------------------------------------------
-Line 17:
+Line 17 (wrong operation--> performing avg on avg):
 filtered_preds.sql: SELECT MAX( stadium.capacity ) , AVG( stadium.average ) FROM stadium
 filtered_dev.sql: select max(capacity), average from stadium
 --------------------------------------------------
-Line 18:
+Line 18 (wrong column selection):
 filtered_preds.sql: SELECT AVG( stadium.average ) , MAX( stadium.capacity ) FROM stadium
 filtered_dev.sql: select avg(capacity) ,  max(capacity) from stadium
 --------------------------------------------------
-Line 23:
-filtered_preds.sql: SELECT concert.year FROM concert GROUP BY concert.year ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 24:
-filtered_preds.sql: SELECT concert.year FROM concert GROUP BY concert.year ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 32:
-filtered_preds.sql: SELECT pets.pettype , MAX( pets.weight ) FROM pets GROUP BY pets.pettype
-filtered_dev.sql: SELECT max(weight) ,  petType FROM pets GROUP BY petType
---------------------------------------------------
-Line 33:
+Line 33 (duplicant column selection):
 filtered_preds.sql: SELECT pets.pettype , MAX( pets.weight ) , MAX( pets.weight ) FROM pets GROUP BY pets.pettype
 filtered_dev.sql: SELECT max(weight) ,  petType FROM pets GROUP BY petType
 --------------------------------------------------
-Line 34:
-filtered_preds.sql: SELECT COUNT( DISTINCT pets.pettype ) FROM pets
-filtered_dev.sql: SELECT count(DISTINCT pettype) FROM pets
---------------------------------------------------
-Line 35:
-filtered_preds.sql: SELECT COUNT( DISTINCT pets.pettype ) FROM pets
-filtered_dev.sql: SELECT count(DISTINCT pettype) FROM pets
---------------------------------------------------
-Line 40:
+Line 40 (wrong operation --> completely different logic):
 filtered_preds.sql: SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype
 filtered_dev.sql: SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype
 --------------------------------------------------
-Line 41:
+Line 41 (wrong operation --> completely different logic):
 filtered_preds.sql: SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype
 filtered_dev.sql: SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype
 --------------------------------------------------
-Line 42:
-filtered_preds.sql: SELECT pets.pettype , AVG( pets.weight ) FROM pets GROUP BY pets.pettype
-filtered_dev.sql: SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype
---------------------------------------------------
-Line 47:
-filtered_preds.sql: SELECT AVG( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = 4
-filtered_dev.sql: SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4;
---------------------------------------------------
-Line 48:
-filtered_preds.sql: SELECT AVG( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = 4
-filtered_dev.sql: SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4;
---------------------------------------------------
-Line 49:
-filtered_preds.sql: SELECT MIN( cars_data.weight ) FROM cars_data WHERE cars_data.cylinders = 8 AND cars_data.year = 1974
-filtered_dev.sql: select min(weight) from cars_data where cylinders  =  8 and year  =  1974
---------------------------------------------------
-Line 50:
-filtered_preds.sql: SELECT MIN( cars_data.weight ) FROM cars_data WHERE cars_data.cylinders = 8 AND cars_data.year = 1974
-filtered_dev.sql: select min(weight) from cars_data where cylinders  =  8 and year  =  1974
---------------------------------------------------
-Line 51:
+Line 51 (wrong operation --> completely different logic):
 filtered_preds.sql: SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker
 filtered_dev.sql: SELECT Maker ,  Model FROM MODEL_LIST;
 --------------------------------------------------
-Line 52:
+Line 52 (wrong operation --> completely different logic):
 filtered_preds.sql: SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker
 filtered_dev.sql: SELECT Maker ,  Model FROM MODEL_LIST;
 --------------------------------------------------
-Line 55:
-filtered_preds.sql: SELECT AVG( cars_data.weight ) , cars_data.year FROM cars_data GROUP BY cars_data.year
-filtered_dev.sql: SELECT avg(Weight) ,  YEAR FROM CARS_DATA GROUP BY YEAR;
---------------------------------------------------
-Line 56:
-filtered_preds.sql: SELECT cars_data.year , AVG( cars_data.weight ) FROM cars_data GROUP BY cars_data.year
-filtered_dev.sql: SELECT avg(Weight) ,  YEAR FROM CARS_DATA GROUP BY YEAR;
---------------------------------------------------
-Line 57:
-filtered_preds.sql: SELECT AVG( cars_data.horsepower ) FROM cars_data WHERE cars_data.year<1980
-filtered_dev.sql: SELECT avg(horsepower) FROM CARS_DATA WHERE YEAR  <  1980;
---------------------------------------------------
-Line 58:
-filtered_preds.sql: SELECT AVG( cars_data.horsepower ) FROM cars_data WHERE cars_data.year<1980
-filtered_dev.sql: select avg(horsepower) from cars_data where year  <  1980;
---------------------------------------------------
-Line 59:
-filtered_preds.sql: SELECT MAX( cars_data.accelerate ) , cars_data.cylinders FROM cars_data GROUP BY cars_data.cylinders
-filtered_dev.sql: SELECT max(Accelerate) ,  Cylinders FROM CARS_DATA GROUP BY Cylinders;
---------------------------------------------------
-Line 60:
-filtered_preds.sql: SELECT cars_data.cylinders , MAX( cars_data.accelerate ) FROM cars_data GROUP BY cars_data.cylinders
-filtered_dev.sql: SELECT max(Accelerate) ,  Cylinders FROM CARS_DATA GROUP BY Cylinders;
---------------------------------------------------
-Line 67:
+Line 67 (missing distinct keyword):
 filtered_preds.sql: SELECT cars_data.year FROM cars_data WHERE cars_data.weight BETWEEN 3000 and 4000
 filtered_dev.sql: select distinct year from cars_data where weight between 3000 and 4000;
 --------------------------------------------------
-Line 68:
-filtered_preds.sql: SELECT cars_data.year FROM cars_data WHERE cars_data.weight<4000 INTERSECT SELECT cars_data.year FROM cars_data WHERE cars_data.weight > 3000
-filtered_dev.sql: select distinct year from cars_data where weight between 3000 and 4000;
---------------------------------------------------
-Line 75:
+Line 75 (different logical operators (AND vs. OR) (other one had correct case)):
 filtered_preds.sql: SELECT MAX( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = '8' AND cars_data.year<1980
 filtered_dev.sql: select max(mpg) from cars_data where cylinders  =  8 or year  <  1980
 --------------------------------------------------
-Line 76:
-filtered_preds.sql: SELECT MAX( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = '8' OR cars_data.year<1980
-filtered_dev.sql: select max(mpg) from cars_data where cylinders  =  8 or year  <  1980
---------------------------------------------------
-Line 104:
+Line 104 (using wrong column for filtering + misunderstanding source and destination):
 filtered_preds.sql: SELECT COUNT( * ) FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'ATO'
 filtered_dev.sql: SELECT count(*) FROM FLIGHTS WHERE DestAirport  =  "ATO"
 --------------------------------------------------
-Line 105:
+Line 105 (using wrong column for filtering):
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE SourceAirport  =  "APG"
 --------------------------------------------------
-Line 107:
+Line 107 (using wrong column for filtering + misunderstanding source and destination):
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  "APG"
 --------------------------------------------------
-Line 108:
+Line 108 (using wrong column for filtering + misunderstanding source and destination):
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  "APG"
 --------------------------------------------------
-Line 117:
-filtered_preds.sql: SELECT COUNT( * ) , shop.location FROM shop GROUP BY shop.location
-filtered_dev.sql: SELECT count(*) ,  LOCATION FROM shop GROUP BY LOCATION
---------------------------------------------------
-Line 118:
-filtered_preds.sql: SELECT COUNT( * ) , shop.location FROM shop GROUP BY shop.location
-filtered_dev.sql: SELECT count(*) ,  LOCATION FROM shop GROUP BY LOCATION
---------------------------------------------------
-Line 121:
-filtered_preds.sql: SELECT MIN( shop.number_products ) , MAX( shop.number_products ) FROM shop
-filtered_dev.sql: SELECT min(Number_products) ,  max(Number_products) FROM shop
---------------------------------------------------
-Line 122:
-filtered_preds.sql: SELECT MIN( shop.number_products ) , MAX( shop.number_products ) FROM shop
-filtered_dev.sql: SELECT min(Number_products) ,  max(Number_products) FROM shop
---------------------------------------------------
-Line 123:
-filtered_preds.sql: SELECT shop.name , shop.location , shop.district FROM shop ORDER BY shop.number_products DESC
-filtered_dev.sql: SELECT name ,  LOCATION ,  district FROM shop ORDER BY number_products DESC
---------------------------------------------------
-Line 124:
-filtered_preds.sql: SELECT shop.name , shop.location , shop.district FROM shop ORDER BY shop.number_products DESC
-filtered_dev.sql: SELECT name ,  LOCATION ,  district FROM shop ORDER BY number_products DESC
---------------------------------------------------
-Line 127:
-filtered_preds.sql: SELECT SUM( evaluation.bonus ) FROM evaluation
-filtered_dev.sql: SELECT sum(bonus) FROM evaluation
---------------------------------------------------
-Line 128:
-filtered_preds.sql: SELECT SUM( evaluation.bonus ) FROM evaluation
-filtered_dev.sql: SELECT sum(bonus) FROM evaluation
---------------------------------------------------
-Line 133:
-filtered_preds.sql: SELECT COUNT( DISTINCT shop.location ) FROM shop
-filtered_dev.sql: SELECT count(DISTINCT LOCATION) FROM shop
---------------------------------------------------
-Line 134:
-filtered_preds.sql: SELECT COUNT( DISTINCT shop.location ) FROM shop
-filtered_dev.sql: SELECT count(DISTINCT LOCATION) FROM shop
---------------------------------------------------
-Line 143:
-filtered_preds.sql: SELECT COUNT( DISTINCT documents.template_id ) FROM documents
-filtered_dev.sql: SELECT count(DISTINCT template_id) FROM Documents
---------------------------------------------------
-Line 144:
-filtered_preds.sql: SELECT COUNT( DISTINCT documents.template_id ) FROM documents
-filtered_dev.sql: SELECT count(DISTINCT template_id) FROM Documents
---------------------------------------------------
-Line 167:
-filtered_preds.sql: SELECT MIN( templates.version_number ) , templates.template_type_code FROM templates
-filtered_dev.sql: SELECT min(Version_Number) ,  template_type_code FROM Templates
---------------------------------------------------
-Line 168:
+Line 168 (aggregation function missing):
 filtered_preds.sql: SELECT templates.version_number , templates.template_type_code FROM templates ORDER BY templates.version_number ASC LIMIT 1
 filtered_dev.sql: SELECT min(Version_Number) ,  template_type_code FROM Templates
 --------------------------------------------------
-Line 179:
+Line 179 (missing order by operation):
 filtered_preds.sql: SELECT paragraphs.document_id , COUNT( * ) FROM paragraphs GROUP BY paragraphs.document_id
 filtered_dev.sql: SELECT document_id ,  count(*) FROM Paragraphs GROUP BY document_id ORDER BY document_id
 --------------------------------------------------
-Line 186:
+Line 186 (unnecessary table joining):
 filtered_preds.sql: SELECT documents.document_id FROM documents JOIN paragraphs ON documents.document_id = paragraphs.document_id GROUP BY paragraphs.document_id HAVING COUNT( * ) BETWEEN 1 and 2
 filtered_dev.sql: SELECT document_id FROM Paragraphs GROUP BY document_id HAVING count(*) BETWEEN 1 AND 2
 --------------------------------------------------
-Line 209:
-filtered_preds.sql: SELECT AVG( visitor.age ) FROM visitor WHERE visitor.level_of_membership <= 4
-filtered_dev.sql: SELECT avg(age) FROM visitor WHERE Level_of_membership  <=  4
---------------------------------------------------
-Line 212:
-filtered_preds.sql: SELECT AVG( museum.num_of_staff ) FROM museum WHERE museum.open_year<2009
-filtered_dev.sql: SELECT avg(num_of_staff) FROM museum WHERE open_year  <  2009
---------------------------------------------------
-Line 215:
-filtered_preds.sql: SELECT AVG( visit.num_of_ticket ) , MAX( visit.num_of_ticket ) FROM visit
-filtered_dev.sql: SELECT avg(num_of_ticket) ,  max(num_of_ticket) FROM visit
---------------------------------------------------
-Line 223:
-filtered_preds.sql: SELECT AVG( matches.loser_age ) , AVG( matches.winner_age ) FROM matches
-filtered_dev.sql: SELECT avg(loser_age) ,  avg(winner_age) FROM matches
---------------------------------------------------
-Line 224:
-filtered_preds.sql: SELECT AVG( matches.loser_age ) , AVG( matches.winner_age ) FROM matches
-filtered_dev.sql: SELECT avg(loser_age) ,  avg(winner_age) FROM matches
---------------------------------------------------
-Line 225:
-filtered_preds.sql: SELECT AVG( matches.winner_rank ) FROM matches
-filtered_dev.sql: SELECT avg(winner_rank) FROM matches
---------------------------------------------------
-Line 226:
-filtered_preds.sql: SELECT AVG( matches.winner_rank ) FROM matches
-filtered_dev.sql: SELECT avg(winner_rank) FROM matches
---------------------------------------------------
-Line 227:
-filtered_preds.sql: SELECT MIN( matches.loser_rank ) FROM matches
-filtered_dev.sql: SELECT min(loser_rank) FROM matches
---------------------------------------------------
-Line 228:
-filtered_preds.sql: SELECT MIN( matches.loser_rank ) FROM matches
-filtered_dev.sql: SELECT min(loser_rank) FROM matches
---------------------------------------------------
-Line 229:
-filtered_preds.sql: SELECT COUNT( DISTINCT players.country_code ) FROM players
-filtered_dev.sql: SELECT count(DISTINCT country_code) FROM players
---------------------------------------------------
-Line 230:
-filtered_preds.sql: SELECT COUNT( DISTINCT players.country_code ) FROM players
-filtered_dev.sql: SELECT count(DISTINCT country_code) FROM players
---------------------------------------------------
-Line 231:
-filtered_preds.sql: SELECT COUNT( DISTINCT matches.loser_name ) FROM matches
-filtered_dev.sql: SELECT count(DISTINCT loser_name) FROM matches
---------------------------------------------------
-Line 232:
-filtered_preds.sql: SELECT COUNT( DISTINCT matches.loser_name ) FROM matches
-filtered_dev.sql: SELECT count(DISTINCT loser_name) FROM matches
---------------------------------------------------
-Line 236:
+Line 236 (unnecessary table joining):
 filtered_preds.sql: SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2013 INTERSECT SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2016
 filtered_dev.sql: SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016
 --------------------------------------------------
-Line 245:
-filtered_preds.sql: SELECT matches.year FROM matches GROUP BY matches.year ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT YEAR FROM matches GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 246:
-filtered_preds.sql: SELECT matches.year FROM matches GROUP BY matches.year ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT YEAR FROM matches GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 247:
+Line 247 (unnecessary table joining):
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank_points FROM matches JOIN rankings ON matches.winner_id = rankings.player_id GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT winner_name ,  winner_rank_points FROM matches GROUP BY winner_name ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 248:
+Line 248 (unnecessary table joining):
 filtered_preds.sql: SELECT matches.winner_name , COUNT( * ) , matches.winner_rank_points FROM matches GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT winner_name ,  winner_rank_points FROM matches GROUP BY winner_name ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 259:
-filtered_preds.sql: SELECT rankings.ranking_date , SUM( rankings.tours ) FROM rankings GROUP BY rankings.ranking_date
-filtered_dev.sql: SELECT sum(tours) ,  ranking_date FROM rankings GROUP BY ranking_date
---------------------------------------------------
-Line 260:
-filtered_preds.sql: SELECT rankings.ranking_date , SUM( rankings.tours ) FROM rankings GROUP BY rankings.ranking_date
-filtered_dev.sql: SELECT sum(tours) ,  ranking_date FROM rankings GROUP BY ranking_date
---------------------------------------------------
-Line 261:
-filtered_preds.sql: SELECT matches.year , COUNT( * ) FROM matches GROUP BY matches.year
-filtered_dev.sql: SELECT count(*) ,  YEAR FROM matches GROUP BY YEAR
---------------------------------------------------
-Line 262:
-filtered_preds.sql: SELECT matches.year , COUNT( * ) FROM matches GROUP BY matches.year
-filtered_dev.sql: SELECT count(*) ,  YEAR FROM matches GROUP BY YEAR
---------------------------------------------------
-Line 263:
+Line 263 (unnecessary table joining + missing distinct keyword + using wrong column for ordering ):
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank FROM matches JOIN players ON matches.winner_id = players.player_id ORDER BY players.birth_date ASC LIMIT 3
 filtered_dev.sql: SELECT DISTINCT winner_name ,  winner_rank FROM matches ORDER BY winner_age LIMIT 3
 --------------------------------------------------
-Line 264:
+Line 264 (unnecessary table joining + missing distinct keyword + using wrong column for ordering ):
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank FROM players JOIN matches ON players.player_id = matches.winner_id ORDER BY players.birth_date ASC LIMIT 3
 filtered_dev.sql: SELECT DISTINCT winner_name ,  winner_rank FROM matches ORDER BY winner_age LIMIT 3
 --------------------------------------------------
-Line 266:
+Line 266 (missing distinct keyword + unnecessary table joining + counting logic error):
 filtered_preds.sql: SELECT COUNT( * ) FROM players JOIN matches ON players.player_id = matches.winner_id WHERE players.hand = 'left' AND matches.tourney_name = 'WTA Championships'
 filtered_dev.sql: SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'
 --------------------------------------------------
-Line 269:
+Line 269 (unnecessary table joining + wrong filtering condition):
 filtered_preds.sql: SELECT COUNT( * ) FROM battle JOIN ship ON battle.id = ship.lost_in_battle WHERE battle.result = 'Captured'
 filtered_dev.sql: SELECT count(*) FROM ship WHERE disposition_of_ship  =  'Captured'
 --------------------------------------------------
-Line 271:
-filtered_preds.sql: SELECT battle.name , battle.date , battle.result FROM battle
-filtered_dev.sql: SELECT name ,  date FROM battle
---------------------------------------------------
-Line 272:
-filtered_preds.sql: SELECT MAX( death.killed ) , MIN( death.killed ) FROM death
-filtered_dev.sql: SELECT max(killed) ,  min(killed) FROM death
---------------------------------------------------
-Line 273:
-filtered_preds.sql: SELECT AVG( death.injured ) FROM death
-filtered_dev.sql: SELECT avg(injured) FROM death
---------------------------------------------------
-Line 274:
-filtered_preds.sql: SELECT battle.name , battle.result FROM battle WHERE battle.bulgarian_commander != 'Boril'
-filtered_dev.sql: SELECT name ,  RESULT FROM battle WHERE bulgarian_commander != 'Boril'
---------------------------------------------------
-Line 276:
-filtered_preds.sql: SELECT COUNT( DISTINCT battle.result ) FROM battle
-filtered_dev.sql: SELECT count(DISTINCT RESULT) FROM battle
---------------------------------------------------
-Line 277:
+Line 277 (unnecessary table joining + filtering using wrong column ):
 filtered_preds.sql: SELECT death.note FROM death JOIN ship ON death.caused_by_ship_id = ship.id WHERE ship.location LIKE '%East%'
 filtered_dev.sql: SELECT note FROM death WHERE note LIKE '%East%'
 --------------------------------------------------
-Line 286:
-filtered_preds.sql: SELECT COUNT( DISTINCT degree_programs.department_id ) FROM degree_programs
-filtered_dev.sql: SELECT count(DISTINCT department_id) FROM Degree_Programs
---------------------------------------------------
-Line 287:
-filtered_preds.sql: SELECT COUNT( DISTINCT degree_programs.department_id ) FROM degree_programs
-filtered_dev.sql: SELECT count(DISTINCT department_id) FROM Degree_Programs
---------------------------------------------------
-Line 288:
-filtered_preds.sql: SELECT COUNT( DISTINCT degree_programs.degree_summary_name ) FROM degree_programs
-filtered_dev.sql: SELECT count(DISTINCT degree_summary_name) FROM Degree_Programs
---------------------------------------------------
-Line 289:
+Line 289 (missing distinct keyword):
 filtered_preds.sql: SELECT COUNT( * ) FROM degree_programs
 filtered_dev.sql: SELECT count(DISTINCT degree_summary_name) FROM Degree_Programs
 --------------------------------------------------
-Line 296:
+Line 296 (wrong column selection):
 filtered_preds.sql: SELECT students.ssn FROM students WHERE students.first_name = 'Timmothy' AND students.last_name = 'Ward'
 filtered_dev.sql: SELECT cell_mobile_number FROM Students WHERE first_name  =  'Timmothy' AND last_name  =  'Ward'
 --------------------------------------------------
-Line 300:
+Line 300 (unnecessary table joining + different columns for ordering):
 filtered_preds.sql: SELECT students.first_name , students.middle_name , students.last_name FROM degree_programs JOIN student_enrolment ON degree_programs.degree_program_id = student_enrolment.degree_program_id JOIN students ON student_enrolment.student_id = students.student_id ORDER BY students.date_first_registered ASC LIMIT 1
 filtered_dev.sql: SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1
 --------------------------------------------------
-Line 301:
+Line 301 (unnecessary table joining + wrong column for filtering + wrong column for ordering):
 filtered_preds.sql: SELECT students.first_name , students.middle_name , students.last_name FROM students JOIN student_enrolment ON students.student_id = student_enrolment.student_id ORDER BY students.date_first_registered ASC LIMIT 1
 filtered_dev.sql: SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1
 --------------------------------------------------
-Line 302:
+Line 302 (wrong filtering logic):
 filtered_preds.sql: SELECT students.first_name , students.permanent_address_id FROM students WHERE students.permanent_address_id IN (SELECT MAX( students.ssn ) FROM students)
 filtered_dev.sql: SELECT first_name FROM Students WHERE current_address_id != permanent_address_id
 --------------------------------------------------
-Line 304:
+Line 304 (wrong column selection):
 filtered_preds.sql: SELECT AVG( transcripts.other_details ) FROM transcripts
 filtered_dev.sql: SELECT avg(transcript_date) FROM Transcripts
 --------------------------------------------------
-Line 305:
-filtered_preds.sql: SELECT AVG( transcripts.transcript_date ) FROM transcripts
-filtered_dev.sql: SELECT avg(transcript_date) FROM Transcripts
---------------------------------------------------
-Line 306:
+Line 306 (selecting abundant column):
 filtered_preds.sql: SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date ASC LIMIT 1
 filtered_dev.sql: SELECT transcript_date ,  other_details FROM Transcripts ORDER BY transcript_date ASC LIMIT 1
 --------------------------------------------------
-Line 307:
+Line 307 (missing a column):
 filtered_preds.sql: SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date ASC LIMIT 1
 filtered_dev.sql: SELECT transcript_date ,  other_details FROM Transcripts ORDER BY transcript_date ASC LIMIT 1
 --------------------------------------------------
-Line 308:
+Line 308 (using different table):
 filtered_preds.sql: SELECT COUNT( * ) FROM courses
 filtered_dev.sql: SELECT count(*) FROM Transcripts
 --------------------------------------------------
-Line 309:
+Line 309 (using different table):
 filtered_preds.sql: SELECT COUNT( * ) FROM courses
 filtered_dev.sql: SELECT count(*) FROM Transcripts
 --------------------------------------------------
-Line 312:
+Line 312 (selecting wrong columns + using different table):
 filtered_preds.sql: SELECT student_enrolment_courses.course_id , COUNT( * ) FROM student_enrolment_courses GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 313:
+Line 313 (selecting wrong columns + using different table):
 filtered_preds.sql: SELECT student_enrolment_courses.student_course_id , COUNT( * ) FROM courses JOIN transcript_contents ON courses.course_id = transcript_contents.student_course_id GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 314:
-filtered_preds.sql: SELECT COUNT( DISTINCT students.current_address_id ) FROM students
-filtered_dev.sql: SELECT count(DISTINCT current_address_id) FROM Students
---------------------------------------------------
-Line 315:
+Line 315 (missing count function):
 filtered_preds.sql: SELECT DISTINCT students.current_address_id FROM students
 filtered_dev.sql: SELECT count(DISTINCT current_address_id) FROM Students
 --------------------------------------------------
-Line 316:
+Line 316 (wrong column selection + soring order):
 filtered_preds.sql: SELECT students.ssn FROM students ORDER BY students.other_student_details ASC
 filtered_dev.sql: SELECT other_student_details FROM Students ORDER BY other_student_details DESC
 --------------------------------------------------
-Line 317:
+Line 317 (unnecessary table joining + sorting order + wrong column selection):
 filtered_preds.sql: SELECT student_enrolment.other_details FROM student_enrolment JOIN students ON student_enrolment.student_id = students.student_id ORDER BY student_enrolment.other_details ASC
 filtered_dev.sql: SELECT other_student_details FROM Students ORDER BY other_student_details DESC
 --------------------------------------------------
-Line 318:
+Line 318 (wrong column selection):
 filtered_preds.sql: SELECT sections.section_name FROM sections WHERE sections.section_name = 'h'
 filtered_dev.sql: SELECT section_description FROM Sections WHERE section_name  =  'h'
 --------------------------------------------------
-Line 322:
+Line 322 (wrong column selection):
 filtered_preds.sql: SELECT cartoon.directed_by FROM cartoon WHERE cartoon.directed_by = 'Ben Jones'
 filtered_dev.sql: SELECT Title FROM Cartoon WHERE Directed_by = "Ben Jones";
 --------------------------------------------------
-Line 332:
+Line 332 (missing distinct keyword + missing count operation):
 filtered_preds.sql: SELECT COUNT( DISTINCT tv_channel.series_name ) , tv_channel.content FROM tv_channel
 filtered_dev.sql: SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel;
 --------------------------------------------------
-Line 333:
+Line 333 (missing distinct keyword + missing count operation):
 filtered_preds.sql: SELECT COUNT( DISTINCT tv_channel.series_name ) , tv_channel.content FROM tv_channel
 filtered_dev.sql: SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel;
 --------------------------------------------------
-Line 340:
-filtered_preds.sql: SELECT tv_channel.language , COUNT( * ) FROM tv_channel GROUP BY tv_channel.language ORDER BY COUNT( tv_channel.language ) ASC LIMIT 1
-filtered_dev.sql: SELECT LANGUAGE ,  count(*) FROM TV_Channel GROUP BY LANGUAGE ORDER BY count(*) ASC LIMIT 1;
---------------------------------------------------
-Line 341:
-filtered_preds.sql: SELECT tv_channel.language , COUNT( * ) FROM tv_channel GROUP BY tv_channel.language ORDER BY COUNT( * ) ASC LIMIT 1
-filtered_dev.sql: SELECT LANGUAGE ,  count(*) FROM TV_Channel GROUP BY LANGUAGE ORDER BY count(*) ASC LIMIT 1;
---------------------------------------------------
-Line 342:
-filtered_preds.sql: SELECT tv_channel.language , COUNT( * ) FROM tv_channel GROUP BY tv_channel.language
-filtered_dev.sql: SELECT LANGUAGE ,  count(*) FROM TV_Channel GROUP BY LANGUAGE
---------------------------------------------------
-Line 343:
-filtered_preds.sql: SELECT tv_channel.language , COUNT( * ) FROM tv_channel GROUP BY tv_channel.language
-filtered_dev.sql: SELECT LANGUAGE ,  count(*) FROM TV_Channel GROUP BY LANGUAGE
---------------------------------------------------
-Line 348:
+Line 348 (wrong operation function):
 filtered_preds.sql: SELECT MIN( tv_series.share ) , MAX( tv_series.share ) FROM tv_series
 filtered_dev.sql: SELECT max(SHARE) , min(SHARE) FROM TV_series;
 --------------------------------------------------
-Line 349:
-filtered_preds.sql: SELECT MAX( tv_series.share ) , MIN( tv_series.share ) FROM tv_series
-filtered_dev.sql: SELECT max(SHARE) , min(SHARE) FROM TV_series;
---------------------------------------------------
-Line 370:
-filtered_preds.sql: SELECT AVG( poker_player.earnings ) FROM poker_player
-filtered_dev.sql: SELECT avg(Earnings) FROM poker_player
---------------------------------------------------
-Line 371:
-filtered_preds.sql: SELECT AVG( poker_player.earnings ) FROM poker_player
-filtered_dev.sql: SELECT avg(Earnings) FROM poker_player
---------------------------------------------------
-Line 374:
-filtered_preds.sql: SELECT MAX( poker_player.final_table_made ) FROM poker_player WHERE poker_player.earnings<200000
-filtered_dev.sql: SELECT max(Final_Table_Made) FROM poker_player WHERE Earnings  <  200000
---------------------------------------------------
-Line 375:
-filtered_preds.sql: SELECT MAX( poker_player.final_table_made ) FROM poker_player WHERE poker_player.earnings<200000
-filtered_dev.sql: SELECT max(Final_Table_Made) FROM poker_player WHERE Earnings  <  200000
---------------------------------------------------
-Line 386:
-filtered_preds.sql: SELECT COUNT( DISTINCT people.nationality ) FROM people
-filtered_dev.sql: SELECT count(DISTINCT Nationality) FROM people
---------------------------------------------------
-Line 387:
-filtered_preds.sql: SELECT COUNT( DISTINCT people.nationality ) FROM people
-filtered_dev.sql: SELECT count(DISTINCT Nationality) FROM people
---------------------------------------------------
-Line 391:
-filtered_preds.sql: SELECT MAX( area_code_state.area_code ) , MIN( area_code_state.area_code ) FROM area_code_state
-filtered_dev.sql: SELECT max(area_code) ,  min(area_code) FROM area_code_state
---------------------------------------------------
-Line 392:
-filtered_preds.sql: SELECT MAX( votes.created ) FROM votes WHERE votes.state = 'CA'
-filtered_dev.sql: SELECT max(created) FROM votes WHERE state  =  'CA'
---------------------------------------------------
-Line 401:
-filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.region = 'Caribbean'
-filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Region  =  "Caribbean"
---------------------------------------------------
-Line 402:
-filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.region = 'Carribean'
-filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Region  =  "Caribbean"
---------------------------------------------------
-Line 409:
-filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.region = 'Central Africa'
-filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Region  =  "Central Africa"
---------------------------------------------------
-Line 410:
-filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.region = 'Central Africa'
-filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Region  =  "Central Africa"
---------------------------------------------------
-Line 413:
+Line 413 (wrong column selection):
 filtered_preds.sql: SELECT SUM( country.population ) , MAX( country.gnp ) FROM country WHERE country.region = 'Asia'
 filtered_dev.sql: SELECT sum(Population) ,  max(GNP) FROM country WHERE Continent  =  "Asia"
 --------------------------------------------------
-Line 414:
+Line 414 (missing operation + wrong column selection):
 filtered_preds.sql: SELECT country.gnp FROM country WHERE country.region = 'Asia' ORDER BY country.gnp DESC LIMIT 1
 filtered_dev.sql: SELECT sum(Population) ,  max(GNP) FROM country WHERE Continent  =  "Asia"
 --------------------------------------------------
-Line 415:
+Line 415 (wrong column selection):
 filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.region = 'African' AND country.governmentform = 'republic'
 filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  "Africa" AND GovernmentForm  =  "Republic"
 --------------------------------------------------
-Line 416:
+Line 416 (wrong keyword selection):
 filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.continent = 'Africa' AND country.governmentform = 'Africa'
 filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  "Africa" AND GovernmentForm  =  "Republic"
 --------------------------------------------------
-Line 417:
+Line 417 (wrong column selection):
 filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.continent = 'Asia' OR country.region = 'Europe'
 filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Continent  =  "Asia" OR Continent  =  "Europe"
 --------------------------------------------------
-Line 418:
+Line 418 (wrong column selection):
 filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.region = 'Asia' OR country.region = 'Europe'
 filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Continent  =  "Asia" OR Continent  =  "Europe"
 --------------------------------------------------
-Line 419:
-filtered_preds.sql: SELECT SUM( city.population ) FROM city WHERE city.district = 'Gelderland'
-filtered_dev.sql: SELECT sum(Population) FROM city WHERE District  =  "Gelderland"
---------------------------------------------------
-Line 420:
-filtered_preds.sql: SELECT SUM( city.population ) FROM city WHERE city.district = 'Gelderland'
-filtered_dev.sql: SELECT sum(Population) FROM city WHERE District  =  "Gelderland"
---------------------------------------------------
-Line 421:
+Line 421 (wrong keyword selection --> if case sensitive):
 filtered_preds.sql: SELECT AVG( country.gnp ) , SUM( country.population ) FROM country WHERE country.governmentform = 'US territory'
 filtered_dev.sql: SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  "US Territory"
 --------------------------------------------------
-Line 422:
+Line 422 (wrong keyword selection --> if case sensitive):
 filtered_preds.sql: SELECT AVG( country.gnp ) , SUM( country.population ) FROM country WHERE country.region = 'US territory'
 filtered_dev.sql: SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  "US Territory"
 --------------------------------------------------
-Line 423:
-filtered_preds.sql: SELECT COUNT( DISTINCT countrylanguage.language ) FROM countrylanguage
-filtered_dev.sql: SELECT count(DISTINCT LANGUAGE) FROM countrylanguage
---------------------------------------------------
-Line 424:
-filtered_preds.sql: SELECT COUNT( DISTINCT countrylanguage.language ) FROM countrylanguage
-filtered_dev.sql: SELECT count(DISTINCT LANGUAGE) FROM countrylanguage
---------------------------------------------------
-Line 425:
+Line 425 (wrong column selection):
 filtered_preds.sql: SELECT COUNT( DISTINCT country.governmentform ) FROM country WHERE country.region = 'Africa'
 filtered_dev.sql: SELECT count(DISTINCT GovernmentForm) FROM country WHERE Continent  =  "Africa"
 --------------------------------------------------
-Line 426:
+Line 426 (wrong column selection):
 filtered_preds.sql: SELECT COUNT( DISTINCT country.governmentform ) FROM country WHERE country.region = 'Africa'
 filtered_dev.sql: SELECT count(DISTINCT GovernmentForm) FROM country WHERE Continent  =  "Africa"
 --------------------------------------------------
-Line 435:
+Line 435 (from different tables):
 filtered_preds.sql: SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'
 filtered_dev.sql: SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  "English"
 --------------------------------------------------
-Line 436:
+Line 436 (from different tables):
 filtered_preds.sql: SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'
 filtered_dev.sql: SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  "English"
 --------------------------------------------------
-Line 445:
-filtered_preds.sql: SELECT country.governmentform , SUM( country.population ) FROM country GROUP BY country.governmentform HAVING AVG( country.lifeexpectancy ) > 72
-filtered_dev.sql: SELECT sum(Population) ,  GovernmentForm FROM country GROUP BY GovernmentForm HAVING avg(LifeExpectancy)  >  72
---------------------------------------------------
-Line 446:
-filtered_preds.sql: SELECT SUM( country.population ) , country.governmentform FROM country GROUP BY country.governmentform HAVING AVG( country.lifeexpectancy ) > 72
-filtered_dev.sql: SELECT sum(Population) ,  GovernmentForm FROM country GROUP BY GovernmentForm HAVING avg(LifeExpectancy)  >  72
---------------------------------------------------
-Line 447:
+Line 447 (different filtering sequence):
 filtered_preds.sql: SELECT country.continent , SUM( country.population ) FROM country WHERE country.lifeexpectancy<72 GROUP BY country.continent
 filtered_dev.sql: SELECT sum(Population) ,  avg(LifeExpectancy) ,  Continent FROM country GROUP BY Continent HAVING avg(LifeExpectancy)  <  72
 --------------------------------------------------
-Line 448:
+Line 448 (different filtering sequence):
 filtered_preds.sql: SELECT country.continent , SUM( country.population ) FROM country WHERE country.lifeexpectancy<72 GROUP BY country.continent
 filtered_dev.sql: SELECT sum(Population) ,  avg(LifeExpectancy) ,  Continent FROM country GROUP BY Continent HAVING avg(LifeExpectancy)  <  72
 --------------------------------------------------
-Line 459:
+Line 459 (difference in filter logic):
 filtered_preds.sql: SELECT SUM( country.population ) , AVG( country.surfacearea ) FROM country WHERE country.continent = 'North America' HAVING AVG( country.surfacearea ) > 3000
 filtered_dev.sql: select sum(population) ,  avg(surfacearea) from country where continent  =  "north america" and surfacearea  >  3000
 --------------------------------------------------
-Line 460:
+Line 460 (where uses wrong columns):
 filtered_preds.sql: SELECT SUM( country.population ) , AVG( country.surfacearea ) FROM country WHERE country.region = 'North America' AND country.surfacearea > 3000
 filtered_dev.sql: select sum(population) ,  avg(surfacearea) from country where continent  =  "north america" and surfacearea  >  3000
 --------------------------------------------------
-Line 463:
-filtered_preds.sql: SELECT countrylanguage.language FROM countrylanguage GROUP BY countrylanguage.language ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT LANGUAGE FROM countrylanguage GROUP BY LANGUAGE ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 464:
-filtered_preds.sql: SELECT countrylanguage.language FROM countrylanguage GROUP BY countrylanguage.language ORDER BY COUNT( * ) DESC LIMIT 1
-filtered_dev.sql: SELECT LANGUAGE FROM countrylanguage GROUP BY LANGUAGE ORDER BY count(*) DESC LIMIT 1
---------------------------------------------------
-Line 465:
+Line 465 (just everything lol):
 filtered_preds.sql: SELECT countrylanguage.language FROM countrylanguage ORDER BY countrylanguage.percentage DESC LIMIT 1
 filtered_dev.sql: SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode
 --------------------------------------------------
-Line 466:
+Line 466 (missing column selection):
 filtered_preds.sql: SELECT countrylanguage.countrycode , MAX( countrylanguage.percentage ) FROM countrylanguage GROUP BY countrylanguage.countrycode
 filtered_dev.sql: SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode
 --------------------------------------------------
-Line 467:
+Line 467 (syntax error):
 filtered_preds.sql: SELECT COUNT( * ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish' ORDER BY countrylanguage.percentage DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,   max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
-Line 468:
+Line 468 (missing grouping + missing selecting column):
 filtered_preds.sql: SELECT COUNT( * ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish'
 filtered_dev.sql: SELECT count(*) ,   max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
@@ -618,79 +270,15 @@ Line 470:
 filtered_preds.sql: SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.percentage > (SELECT AVG( countrylanguage.percentage ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish')
 filtered_dev.sql: SELECT CountryCode ,  max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
-Line 479:
-filtered_preds.sql: SELECT AVG( show.attendance ) FROM show
-filtered_dev.sql: SELECT avg(Attendance) FROM SHOW
---------------------------------------------------
-Line 480:
-filtered_preds.sql: SELECT AVG( show.attendance ) FROM show
-filtered_dev.sql: SELECT avg(Attendance) FROM SHOW
---------------------------------------------------
-Line 481:
-filtered_preds.sql: SELECT MAX( performance.share ) , MIN( performance.share ) FROM performance WHERE performance.type != 'Live final'
-filtered_dev.sql: SELECT max(SHARE) ,  min(SHARE) FROM performance WHERE TYPE != "Live final"
---------------------------------------------------
-Line 482:
-filtered_preds.sql: SELECT MAX( performance.share ) , MIN( performance.share ) FROM performance WHERE performance.type != 'Live final'
-filtered_dev.sql: SELECT max(SHARE) ,  min(SHARE) FROM performance WHERE TYPE != "Live final"
---------------------------------------------------
-Line 483:
-filtered_preds.sql: SELECT COUNT( DISTINCT conductor.nationality ) FROM conductor
-filtered_dev.sql: SELECT count(DISTINCT Nationality) FROM conductor
---------------------------------------------------
-Line 484:
-filtered_preds.sql: SELECT COUNT( DISTINCT conductor.nationality ) FROM conductor
-filtered_dev.sql: SELECT count(DISTINCT Nationality) FROM conductor
---------------------------------------------------
-Line 527:
-filtered_preds.sql: SELECT COUNT( DISTINCT treatments.dog_id ) FROM treatments
-filtered_dev.sql: SELECT count(DISTINCT dog_id) FROM Treatments
---------------------------------------------------
-Line 528:
-filtered_preds.sql: SELECT COUNT( DISTINCT treatments.dog_id ) FROM treatments
-filtered_dev.sql: SELECT count(DISTINCT dog_id) FROM Treatments
---------------------------------------------------
-Line 529:
-filtered_preds.sql: SELECT COUNT( DISTINCT treatments.professional_id ) FROM treatments
-filtered_dev.sql: SELECT count(DISTINCT professional_id) FROM Treatments
---------------------------------------------------
-Line 530:
-filtered_preds.sql: SELECT COUNT( DISTINCT treatments.professional_id ) FROM treatments
-filtered_dev.sql: SELECT count(DISTINCT professional_id) FROM Treatments
---------------------------------------------------
-Line 541:
-filtered_preds.sql: SELECT AVG( dogs.age ) FROM dogs
-filtered_dev.sql: SELECT avg(age) FROM Dogs
---------------------------------------------------
-Line 542:
-filtered_preds.sql: SELECT AVG( dogs.age ) FROM dogs
-filtered_dev.sql: SELECT avg(age) FROM Dogs
---------------------------------------------------
-Line 543:
-filtered_preds.sql: SELECT dogs.age FROM dogs ORDER BY dogs.age DESC LIMIT 1
-filtered_dev.sql: SELECT max(age) FROM Dogs
---------------------------------------------------
-Line 544:
-filtered_preds.sql: SELECT dogs.age FROM dogs ORDER BY dogs.age DESC LIMIT 1
-filtered_dev.sql: SELECT max(age) FROM Dogs
---------------------------------------------------
-Line 547:
+Line 547 (different operation functions):
 filtered_preds.sql: SELECT SUM( charges.charge_amount ) FROM charges ORDER BY charges.charge_type DESC LIMIT 1
 filtered_dev.sql: SELECT max(charge_amount) FROM Charges
 --------------------------------------------------
-Line 548:
+Line 548 (different operation functions):
 filtered_preds.sql: SELECT charges.charge_amount FROM charges ORDER BY charges.charge_type DESC LIMIT 1
 filtered_dev.sql: SELECT max(charge_amount) FROM Charges
 --------------------------------------------------
 Line 551:
 filtered_preds.sql: SELECT DISTINCT breeds.breed_name , sizes.size_description FROM breeds JOIN dogs ON breeds.breed_code = dogs.breed_code JOIN sizes ON dogs.size_code = sizes.size_code
 filtered_dev.sql: SELECT DISTINCT breed_code ,  size_code FROM dogs
---------------------------------------------------
-Line 569:
-filtered_preds.sql: SELECT singer.citizenship , MAX( singer.net_worth_millions ) FROM singer GROUP BY singer.citizenship
-filtered_dev.sql: SELECT Citizenship ,  max(Net_Worth_Millions) FROM singer GROUP BY Citizenship
---------------------------------------------------
-Line 570:
-filtered_preds.sql: SELECT MAX( singer.net_worth_millions ) , singer.citizenship FROM singer GROUP BY singer.citizenship
-filtered_dev.sql: SELECT Citizenship ,  max(Net_Worth_Millions) FROM singer GROUP BY Citizenship
---------------------------------------------------
+
