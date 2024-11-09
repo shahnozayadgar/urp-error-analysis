@@ -20,7 +20,6 @@ SELECT stadium.name , stadium.capacity FROM stadium ORDER BY stadium.average DES
 SELECT stadium.name , stadium.capacity FROM stadium ORDER BY stadium.average DESC LIMIT 1	concert_singer
 SELECT COUNT( * ) FROM concert WHERE concert.year = 2014 OR concert.year = 2015	concert_singer
 SELECT COUNT( * ) FROM concert WHERE concert.year = 2014 OR concert.year = 2015	concert_singer
-SELECT concert.stadium_id , COUNT( * ) FROM concert GROUP BY concert.stadium_id	concert_singer
 SELECT concert.year FROM concert GROUP BY concert.year ORDER BY COUNT( * ) DESC LIMIT 1	concert_singer
 SELECT concert.year FROM concert GROUP BY concert.year ORDER BY COUNT( * ) DESC LIMIT 1	concert_singer
 SELECT singer.country FROM singer WHERE singer.age > 40 INTERSECT SELECT singer.country FROM singer WHERE singer.age<30	concert_singer
@@ -38,19 +37,19 @@ SELECT pets.pettype , pets.weight FROM pets ORDER BY pets.pet_age ASC LIMIT 1	pe
 SELECT pets.pettype , pets.weight FROM pets ORDER BY pets.pet_age ASC LIMIT 1	pets_1
 SELECT pets.petid , pets.weight FROM pets WHERE pets.pet_age > 1	pets_1
 SELECT pets.petid , pets.weight FROM pets WHERE pets.pet_age > 1	pets_1
+SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype	pets_1
+SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype	pets_1
 SELECT pets.pettype , AVG( pets.weight ) FROM pets GROUP BY pets.pettype	pets_1
-SELECT pets.pettype , AVG( pets.weight ) FROM pets GROUP BY pets.pettype	pets_1
-SELECT has_pet.stuid , COUNT( * ) FROM has_pet GROUP BY has_pet.stuid	pets_1
 SELECT COUNT( * ) FROM continents	car_1
 SELECT COUNT( * ) FROM continents	car_1
 SELECT COUNT( * ) FROM countries	car_1
 SELECT COUNT( * ) FROM countries	car_1
-SELECT COUNT( * ) FROM car_makers WHERE car_makers.country = 'france'	car_1
-SELECT COUNT( * ) FROM car_makers WHERE car_makers.country = 'United States'	car_1
 SELECT AVG( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = 4	car_1
 SELECT AVG( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = 4	car_1
 SELECT MIN( cars_data.weight ) FROM cars_data WHERE cars_data.cylinders = 8 AND cars_data.year = 1974	car_1
 SELECT MIN( cars_data.weight ) FROM cars_data WHERE cars_data.cylinders = 8 AND cars_data.year = 1974	car_1
+SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker	car_1
+SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker	car_1
 SELECT COUNT( * ) FROM cars_data WHERE cars_data.horsepower > 150	car_1
 SELECT COUNT( * ) FROM cars_data WHERE cars_data.horsepower > 150	car_1
 SELECT AVG( cars_data.weight ) , cars_data.year FROM cars_data GROUP BY cars_data.year	car_1
@@ -102,7 +101,11 @@ SELECT airports.airportname FROM airports WHERE airports.city = 'Aberdeen'	fligh
 SELECT COUNT( * ) FROM flights WHERE flights.sourceairport = 'APG'	flight_2
 SELECT COUNT( * ) FROM flights WHERE flights.sourceairport = 'APG'	flight_2
 SELECT COUNT( * ) FROM flights WHERE flights.destairport = 'ATO'	flight_2
+SELECT COUNT( * ) FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'ATO'	flight_2
+SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'	flight_2
 SELECT flights.flightno FROM flights WHERE flights.sourceairport = 'APG'	flight_2
+SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'	flight_2
+SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'	flight_2
 SELECT COUNT( * ) FROM employee	employee_hire_evaluation
 SELECT COUNT( * ) FROM employee	employee_hire_evaluation
 SELECT employee.name FROM employee ORDER BY employee.age ASC	employee_hire_evaluation
@@ -180,6 +183,7 @@ SELECT paragraphs.document_id FROM paragraphs GROUP BY paragraphs.document_id HA
 SELECT paragraphs.document_id FROM paragraphs GROUP BY paragraphs.document_id ORDER BY COUNT( * ) ASC LIMIT 1	cre_Doc_Template_Mgt
 SELECT paragraphs.document_id FROM paragraphs GROUP BY paragraphs.document_id ORDER BY COUNT( * ) ASC LIMIT 1	cre_Doc_Template_Mgt
 SELECT paragraphs.document_id FROM paragraphs GROUP BY paragraphs.document_id HAVING COUNT( * ) BETWEEN 1 and 2	cre_Doc_Template_Mgt
+SELECT documents.document_id FROM documents JOIN paragraphs ON documents.document_id = paragraphs.document_id GROUP BY paragraphs.document_id HAVING COUNT( * ) BETWEEN 1 and 2	cre_Doc_Template_Mgt
 SELECT paragraphs.document_id FROM paragraphs WHERE paragraphs.paragraph_text = 'Brazil' INTERSECT SELECT paragraphs.document_id FROM paragraphs WHERE paragraphs.paragraph_text = 'Ireland'	cre_Doc_Template_Mgt
 SELECT paragraphs.document_id FROM paragraphs WHERE paragraphs.paragraph_text LIKE '%Brazil%' INTERSECT SELECT paragraphs.document_id FROM paragraphs WHERE paragraphs.paragraph_text LIKE '%Ireland%'	cre_Doc_Template_Mgt
 SELECT COUNT( * ) FROM teacher	course_teach
@@ -229,6 +233,7 @@ SELECT COUNT( DISTINCT matches.loser_name ) FROM matches	wta_1
 SELECT matches.tourney_name FROM matches GROUP BY matches.tourney_name HAVING COUNT( * ) > 10	wta_1
 SELECT matches.tourney_name FROM matches GROUP BY matches.tourney_name HAVING COUNT( * ) > 10	wta_1
 SELECT matches.winner_name FROM matches WHERE matches.year = 2016 INTERSECT SELECT matches.winner_name FROM matches WHERE matches.year = 2013	wta_1
+SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2013 INTERSECT SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2016
 SELECT COUNT( * ) FROM matches WHERE matches.year = 2013 OR matches.year = 2016	wta_1
 SELECT COUNT( * ) FROM matches WHERE matches.year = 2013 OR matches.year = 2016	wta_1
 SELECT players.first_name , players.country_code FROM players ORDER BY players.birth_date ASC LIMIT 1	wta_1
@@ -239,6 +244,7 @@ SELECT players.first_name , players.last_name FROM players WHERE players.hand = 
 SELECT players.first_name , players.last_name FROM players WHERE players.hand = 'left' ORDER BY players.birth_date ASC	wta_1
 SELECT matches.year FROM matches GROUP BY matches.year ORDER BY COUNT( * ) DESC LIMIT 1	wta_1
 SELECT matches.year FROM matches GROUP BY matches.year ORDER BY COUNT( * ) DESC LIMIT 1	wta_1
+SELECT matches.winner_name , matches.winner_rank_points FROM matches JOIN rankings ON matches.winner_id = rankings.player_id GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1	wta_1
 SELECT matches.winner_name , COUNT( * ) , matches.winner_rank_points FROM matches GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1	wta_1
 SELECT matches.winner_name FROM matches WHERE matches.tourney_name = 'Australian Open' ORDER BY matches.winner_rank_points DESC LIMIT 1	wta_1
 SELECT matches.winner_name FROM matches WHERE matches.tourney_name = 'Australian Open' ORDER BY matches.winner_rank_points DESC LIMIT 1	wta_1
@@ -254,9 +260,13 @@ SELECT rankings.ranking_date , SUM( rankings.tours ) FROM rankings GROUP BY rank
 SELECT rankings.ranking_date , SUM( rankings.tours ) FROM rankings GROUP BY rankings.ranking_date	wta_1
 SELECT matches.year , COUNT( * ) FROM matches GROUP BY matches.year	wta_1
 SELECT matches.year , COUNT( * ) FROM matches GROUP BY matches.year	wta_1
+SELECT matches.winner_name , matches.winner_rank FROM matches JOIN players ON matches.winner_id = players.player_id ORDER BY players.birth_date ASC LIMIT 3	wta_1
+SELECT matches.winner_name , matches.winner_rank FROM players JOIN matches ON players.player_id = matches.winner_id ORDER BY players.birth_date ASC LIMIT 3	wta_1
 SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'	wta_1
+SELECT COUNT( * ) FROM players JOIN matches ON players.player_id = matches.winner_id WHERE players.hand = 'left' AND matches.tourney_name = 'WTA Championships'	wta_1
 SELECT players.hand , COUNT( * ) FROM players GROUP BY players.hand	wta_1
 SELECT players.hand , COUNT( * ) FROM players GROUP BY players.hand	wta_1
+SELECT COUNT( * ) FROM battle JOIN ship ON battle.id = ship.lost_in_battle WHERE battle.result = 'Captured'	battle_death
 SELECT ship.name , ship.tonnage FROM ship ORDER BY ship.name DESC	battle_death
 SELECT battle.name , battle.date , battle.result FROM battle	battle_death
 SELECT MAX( death.killed ) , MIN( death.killed ) FROM death	battle_death
@@ -264,6 +274,7 @@ SELECT AVG( death.injured ) FROM death	battle_death
 SELECT battle.name , battle.result FROM battle WHERE battle.bulgarian_commander != 'Boril'	battle_death
 SELECT DISTINCT battle.name FROM battle WHERE battle.bulgarian_commander = 'Kaloyan' AND battle.latin_commander = 'Baldwin I'	battle_death
 SELECT COUNT( DISTINCT battle.result ) FROM battle	battle_death
+SELECT death.note FROM death JOIN ship ON death.caused_by_ship_id = ship.id WHERE ship.location LIKE '%East%'	battle_death
 SELECT addresses.line_1 FROM addresses INTERSECT SELECT addresses.line_2 FROM addresses	student_transcripts_tracking
 SELECT addresses.line_1 , addresses.line_2 FROM addresses	student_transcripts_tracking
 SELECT COUNT( * ) FROM courses	student_transcripts_tracking
@@ -286,6 +297,8 @@ SELECT students.ssn FROM students WHERE students.first_name = 'Timmothy' AND stu
 SELECT students.cell_mobile_number FROM students WHERE students.first_name = 'Timmothy' AND students.last_name = 'Ward'	student_transcripts_tracking
 SELECT students.first_name , students.middle_name , students.last_name FROM students ORDER BY students.date_first_registered ASC LIMIT 1	student_transcripts_tracking
 SELECT students.first_name , students.middle_name , students.last_name FROM students ORDER BY students.date_first_registered ASC LIMIT 1	student_transcripts_tracking
+SELECT students.first_name , students.middle_name , students.last_name FROM degree_programs JOIN student_enrolment ON degree_programs.degree_program_id = student_enrolment.degree_program_id JOIN students ON student_enrolment.student_id = students.student_id ORDER BY students.date_first_registered ASC LIMIT 1	student_transcripts_tracking
+SELECT students.first_name , students.middle_name , students.last_name FROM students JOIN student_enrolment ON students.student_id = student_enrolment.student_id ORDER BY students.date_first_registered ASC LIMIT 1	student_transcripts_tracking
 SELECT students.first_name , students.permanent_address_id FROM students WHERE students.permanent_address_id IN (SELECT MAX( students.ssn ) FROM students)	student_transcripts_tracking
 SELECT students.first_name FROM students WHERE students.permanent_address_id<(SELECT MAX( students.ssn ) FROM students)	student_transcripts_tracking
 SELECT AVG( transcripts.other_details ) FROM transcripts	student_transcripts_tracking
@@ -297,9 +310,11 @@ SELECT COUNT( * ) FROM courses	student_transcripts_tracking
 SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date DESC LIMIT 1	student_transcripts_tracking
 SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date DESC LIMIT 1	student_transcripts_tracking
 SELECT student_enrolment_courses.course_id , COUNT( * ) FROM student_enrolment_courses GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1	student_transcripts_tracking
+SELECT student_enrolment_courses.student_course_id , COUNT( * ) FROM courses JOIN transcript_contents ON courses.course_id = transcript_contents.student_course_id GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1	student_transcripts_tracking
 SELECT COUNT( DISTINCT students.current_address_id ) FROM students	student_transcripts_tracking
 SELECT DISTINCT students.current_address_id FROM students	student_transcripts_tracking
 SELECT students.ssn FROM students ORDER BY students.other_student_details ASC	student_transcripts_tracking
+SELECT student_enrolment.other_details FROM student_enrolment JOIN students ON student_enrolment.student_id = students.student_id ORDER BY student_enrolment.other_details ASC	student_transcripts_tracking
 SELECT sections.section_name FROM sections WHERE sections.section_name = 'h'	student_transcripts_tracking
 SELECT sections.section_description FROM sections WHERE sections.section_name = 'h'	student_transcripts_tracking
 SELECT cartoon.title FROM cartoon ORDER BY cartoon.title ASC	tvshow
@@ -417,6 +432,8 @@ SELECT country.name FROM country WHERE country.population<(SELECT MAX( country.p
 SELECT country.name FROM country WHERE country.population<(SELECT MIN( country.population ) FROM country WHERE country.continent = 'African' AND country.region = 'Asia')	world_1
 SELECT country.name FROM country WHERE country.population > (SELECT MAX( country.population ) FROM country WHERE country.region = 'Africa')	world_1
 SELECT country.name FROM country WHERE country.population > (SELECT MAX( country.population ) FROM country WHERE country.region = 'Africa')	world_1
+SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'	world_1
+SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'	world_1
 SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language != 'English'	world_1
 SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language != 'English'	world_1
 SELECT country.name , country.indepyear , country.surfacearea FROM country ORDER BY country.population ASC LIMIT 1	world_1
@@ -503,8 +520,6 @@ SELECT friend.student_id , COUNT( * ) FROM friend GROUP BY friend.student_id	net
 SELECT friend.student_id , COUNT( * ) FROM friend GROUP BY friend.student_id	network_1
 SELECT COUNT( * ) , likes.student_id FROM likes GROUP BY likes.student_id	network_1
 SELECT likes.student_id , COUNT( * ) FROM likes GROUP BY likes.student_id	network_1
-SELECT professionals.first_name FROM professionals	dog_kennels
-SELECT professionals.first_name FROM professionals	dog_kennels
 SELECT professionals.email_address FROM professionals WHERE professionals.state = 'Hawaii' OR professionals.state = 'Wisconsin'	dog_kennels
 SELECT professionals.email_address FROM professionals WHERE professionals.state = 'Hawaii' OR professionals.state = 'Wisconsin'	dog_kennels
 SELECT dogs.date_arrived , dogs.date_departed FROM dogs	dog_kennels
@@ -533,6 +548,7 @@ SELECT SUM( charges.charge_amount ) FROM charges ORDER BY charges.charge_type DE
 SELECT charges.charge_amount FROM charges ORDER BY charges.charge_type DESC LIMIT 1	dog_kennels
 SELECT professionals.email_address , professionals.cell_number , professionals.home_phone FROM professionals	dog_kennels
 SELECT professionals.email_address , professionals.cell_number , professionals.home_phone FROM professionals	dog_kennels
+SELECT DISTINCT breeds.breed_name , sizes.size_description FROM breeds JOIN dogs ON breeds.breed_code = dogs.breed_code JOIN sizes ON dogs.size_code = sizes.size_code	dog_kennels
 SELECT DISTINCT dogs.breed_code , dogs.size_code FROM dogs	dog_kennels
 SELECT COUNT( * ) FROM singer	singer
 SELECT COUNT( * ) FROM singer	singer

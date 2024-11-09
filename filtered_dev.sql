@@ -40,7 +40,6 @@ SELECT petid ,  weight FROM pets WHERE pet_age  >  1	pets_1
 SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype	pets_1
 SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype	pets_1
 SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype	pets_1
-SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype	pets_1
 SELECT count(*) FROM CONTINENTS;	car_1
 SELECT count(*) FROM CONTINENTS;	car_1
 SELECT count(*) FROM COUNTRIES;	car_1
