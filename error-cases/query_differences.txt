@@ -369,3 +369,15 @@ filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	s
 question: What are the names of the sections in reverse alphabetical order?
 filtered_preds.sql: SELECT sections.section_name FROM sections ORDER BY sections.section_name ASC	student_transcripts_tracking
 filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	student_transcripts_tracking
+--------------------------------------------------
+Wrong column in ___ 31 instances 
+Redundant column ____  1 instance
+Wrong table in ____ 14 instances
+Miss a DISTINCT keyword 7 instances
+Wrong operators 1 instance
+Redundant operation in ___  4 instances
+Column missing  2 instances
+Miss aggregation function 10 instances 
+Wrong sorting direction 4 instances
+Wrong Key Value Error 3 instances
+Miss a column in ___ 2 instances
