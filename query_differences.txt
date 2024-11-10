@@ -1,20 +1,19 @@
-Line 6 (wrong key spelling):
+Line 6 (wrong key value error):
 question: What is the average, minimum, and maximum age for all French singers?
 filtered_preds.sql: SELECT AVG( singer.age ) , MIN( singer.age ) , MAX( singer.age ) FROM singer WHERE singer.country = 'French'
 filtered_dev.sql: SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'
 --------------------------------------------------
-Line 16 (wrong column selection):
+Line 16 (wrong column in SELECT):
 question: What are the locations and names of all stations with capacity between 5000 and 10000?
 filtered_preds.sql: SELECT stadium.location , stadium.capacity FROM stadium WHERE stadium.capacity BETWEEN 5000 and 10000
 filtered_dev.sql: SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000
 --------------------------------------------------
-Line 17 (wrong operation--> performing avg on avg):
+Line 17 (wrong column in SELECT):
 question: What is the maximum capacity and the average of all stadiums ?
-question: 
 filtered_preds.sql: SELECT MAX( stadium.capacity ) , AVG( stadium.average ) FROM stadium
 filtered_dev.sql: select max(capacity), average from stadium
 --------------------------------------------------
-Line 18 (wrong column selection):
+Line 18 (wrong column in SELECT):
 question: What is the average and maximum capacities for all stadiums ?
 filtered_preds.sql: SELECT AVG( stadium.average ) , MAX( stadium.capacity ) FROM stadium
 filtered_dev.sql: select avg(capacity) ,  max(capacity) from stadium
@@ -24,56 +23,56 @@ question: Find the maximum weight for each type of pet. List the maximum weight 
 filtered_preds.sql: SELECT pets.pettype , MAX( pets.weight ) , MAX( pets.weight ) FROM pets GROUP BY pets.pettype
 filtered_dev.sql: SELECT max(weight) ,  petType FROM pets GROUP BY petType
 --------------------------------------------------
-Line 40 (wrong operation --> completely different logic):
+Line 40 (wrong column in SELECT + Unnecessary Table Joins):
 question: Find the average and maximum age for each type of pet.
 filtered_preds.sql: SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype
 filtered_dev.sql: SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype
 --------------------------------------------------
-Line 41 (wrong operation --> completely different logic):
+Line 41 (wrong column in SELECT + Unnecessary Table Joins):
 question: What is the average and maximum age for each pet type?
 filtered_preds.sql: SELECT pets.pettype , AVG( student.age ) , MAX( student.age ) FROM student JOIN has_pet ON student.stuid = has_pet.stuid JOIN pets ON has_pet.petid = pets.petid GROUP BY pets.pettype
 filtered_dev.sql: SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype
 --------------------------------------------------
-Line 51 (wrong operation --> completely different logic):
+Line 51 (wrong table in SELECT):
 question: What are all the makers and models?
 filtered_preds.sql: SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker
 filtered_dev.sql: SELECT Maker ,  Model FROM MODEL_LIST;
 --------------------------------------------------
-Line 52 (wrong operation --> completely different logic):
+Line 52 (wrong table in SELECT):
 question: What are the makers and models?
 filtered_preds.sql: SELECT car_makers.maker , model_list.model FROM car_makers JOIN model_list ON car_makers.id = model_list.maker
 filtered_dev.sql: SELECT Maker ,  Model FROM MODEL_LIST;
 --------------------------------------------------
-Line 67 (missing distinct keyword):
+Line 67 (Miss a DISTINCT keyword):
 question: In which years cars were produced weighing no less than 3000 and no more than 4000 ? 
 question answered correctly: What are the different years in which there were cars produced that weighed less than 4000 and also cars that weighted more than 3000 ?
 filtered_preds.sql: SELECT cars_data.year FROM cars_data WHERE cars_data.weight BETWEEN 3000 and 4000
 filtered_dev.sql: select distinct year from cars_data where weight between 3000 and 4000;
 --------------------------------------------------
-Line 75 (different logical operators (AND vs. OR) (other one had correct case)):
+Line 75 (wrong operators):
 question: What is the maximum miles per gallon of the car with 8 cylinders or produced before 1980 ?
 question answered correctly: What is the maximum mpg of the cars that had 8 cylinders or that were produced before 1980 ?
 filtered_preds.sql: SELECT MAX( cars_data.mpg ) FROM cars_data WHERE cars_data.cylinders = '8' AND cars_data.year<1980
 filtered_dev.sql: select max(mpg) from cars_data where cylinders  =  8 or year  <  1980
 --------------------------------------------------
-Line 104 (using wrong column for filtering + misunderstanding source and destination):
+Line 104 (wrong column in WHERE + Unnecessary Table Joins):
 question: Count the number of flights into ATO.
 question answered correctly: How many flights have destination ATO?
 filtered_preds.sql: SELECT COUNT( * ) FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'ATO'
 filtered_dev.sql: SELECT count(*) FROM FLIGHTS WHERE DestAirport  =  "ATO"
 --------------------------------------------------
-Line 105 (using wrong column for filtering):
+Line 105 (wrong column in WHERE + Unnecessary Table Joins):
 question: What are flight numbers of flights departing from Airport \"APG\"?
 question answered correctly: Give the flight numbers of flights leaving from APG.
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE SourceAirport  =  "APG"
 --------------------------------------------------
-Line 107 (using wrong column for filtering + misunderstanding source and destination):
+Line 107 (wrong column in WHERE + Unnecessary Table Joins):
 question: What are flight numbers of flights arriving at Airport \"APG\"?
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  "APG"
 --------------------------------------------------
-Line 108 (using wrong column for filtering + misunderstanding source and destination):
+Line 108 (wrong column in WHERE + Unnecessary Table Joins):
 question: Give the flight numbers of flights landing at APG.
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  "APG"
@@ -84,51 +83,51 @@ question answered correctly: What the smallest version number and its template t
 filtered_preds.sql: SELECT templates.version_number , templates.template_type_code FROM templates ORDER BY templates.version_number ASC LIMIT 1
 filtered_dev.sql: SELECT min(Version_Number) ,  template_type_code FROM Templates
 --------------------------------------------------
-Line 179 (missing order by operation):
+Line 179 (missing ORDER BY operation):
 question: Show all document ids and the number of paragraphs in each document. Order by document id.
 question answered correctly: Return the different document ids along with the number of paragraphs corresponding to each, ordered by id.
 filtered_preds.sql: SELECT paragraphs.document_id , COUNT( * ) FROM paragraphs GROUP BY paragraphs.document_id
 filtered_dev.sql: SELECT document_id ,  count(*) FROM Paragraphs GROUP BY document_id ORDER BY document_id
 --------------------------------------------------
-Line 186 (unnecessary table joining):
+Line 186 (wrong table in SELECT + Unnecessary Table Joins ):
 question: Give the ids of documents that have between one and two paragraphs.
 question answered correctly: What is the document id with 1 to 2 paragraphs?
 filtered_preds.sql: SELECT documents.document_id FROM documents JOIN paragraphs ON documents.document_id = paragraphs.document_id GROUP BY paragraphs.document_id HAVING COUNT( * ) BETWEEN 1 and 2
 filtered_dev.sql: SELECT document_id FROM Paragraphs GROUP BY document_id HAVING count(*) BETWEEN 1 AND 2
 --------------------------------------------------
-Line 236 (unnecessary table joining):
+Line 236 (wrong table in SELECT + Unnecessary Table Joins):
 question: What are the names of players who won in both 2013 and 2016?
 question answered correctly: What are the names of players who won in both 2013 and 2016?
 filtered_preds.sql: SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2013 INTERSECT SELECT players.first_name , players.last_name FROM players JOIN matches ON players.player_id = matches.winner_id WHERE matches.year = 2016
 filtered_dev.sql: SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016
 --------------------------------------------------
-Line 247 (unnecessary table joining):
+Line 247 (Unnecessary Table Joins + Redundant JOIN operation):
 question: Find the name and rank points of the winner who won the most times.
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank_points FROM matches JOIN rankings ON matches.winner_id = rankings.player_id GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT winner_name ,  winner_rank_points FROM matches GROUP BY winner_name ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 248 (unnecessary table joining):
+Line 248 (Redundant operation in SELECT):
 question: What is the name of the winner who has won the most matches, and how many rank points does this player have?
 filtered_preds.sql: SELECT matches.winner_name , COUNT( * ) , matches.winner_rank_points FROM matches GROUP BY matches.winner_name ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT winner_name ,  winner_rank_points FROM matches GROUP BY winner_name ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 263 (unnecessary table joining + missing distinct keyword + using wrong column for ordering ):
+Line 263 (Redundant operation in JOIN + wrong column in ORDER BY + Miss a DISTINCT keyword ):
 question: Find the name and rank of the 3 youngest winners across all matches.
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank FROM matches JOIN players ON matches.winner_id = players.player_id ORDER BY players.birth_date ASC LIMIT 3
 filtered_dev.sql: SELECT DISTINCT winner_name ,  winner_rank FROM matches ORDER BY winner_age LIMIT 3
 --------------------------------------------------
-Line 264 (unnecessary table joining + missing distinct keyword + using wrong column for ordering ):
+Line 264 (Redundant operation in JOIN + wrong column in ORDER BY + Miss a DISTINCT keyword):
 question: What are the names and ranks of the three youngest winners across all matches?
 filtered_preds.sql: SELECT matches.winner_name , matches.winner_rank FROM players JOIN matches ON players.player_id = matches.winner_id ORDER BY players.birth_date ASC LIMIT 3
 filtered_dev.sql: SELECT DISTINCT winner_name ,  winner_rank FROM matches ORDER BY winner_age LIMIT 3
 --------------------------------------------------
-Line 266 (missing distinct keyword + unnecessary table joining + counting logic error):
+Line 266 (Redundant operation in JOIN + miss a DISTINCT keyword):
 question: Find the number of left handed winners who participated in the WTA Championships.
 question asnwered correctly: How many different winners both participated in the WTA Championships and were left handed?
 filtered_preds.sql: SELECT COUNT( * ) FROM players JOIN matches ON players.player_id = matches.winner_id WHERE players.hand = 'left' AND matches.tourney_name = 'WTA Championships'
 filtered_dev.sql: SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'
 --------------------------------------------------
-Line 269 (unnecessary table joining + wrong filtering condition):
+Line 269 (wrong column in WHERE + select wrong table):
 question: How many ships ended up being 'Captured'
 filtered_preds.sql: SELECT COUNT( * ) FROM battle JOIN ship ON battle.id = ship.lost_in_battle WHERE battle.result = 'Captured'
 filtered_dev.sql: SELECT count(*) FROM ship WHERE disposition_of_ship  =  'Captured'
