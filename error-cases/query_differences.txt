@@ -77,7 +77,7 @@ question: Give the flight numbers of flights landing at APG.
 filtered_preds.sql: SELECT flights.flightno FROM flights JOIN airports ON flights.sourceairport = airports.airportcode WHERE airports.airportname = 'APG'
 filtered_dev.sql: SELECT FlightNo FROM FLIGHTS WHERE DestAirport  =  "APG"
 --------------------------------------------------
-Line 168 (aggregation function missing):
+Line 168 (operation ORDER BY operation):
 question: Return the lowest version number, along with its corresponding template type code.
 question answered correctly: What the smallest version number and its template type code?
 filtered_preds.sql: SELECT templates.version_number , templates.template_type_code FROM templates ORDER BY templates.version_number ASC LIMIT 1
@@ -132,179 +132,179 @@ question: How many ships ended up being 'Captured'
 filtered_preds.sql: SELECT COUNT( * ) FROM battle JOIN ship ON battle.id = ship.lost_in_battle WHERE battle.result = 'Captured'
 filtered_dev.sql: SELECT count(*) FROM ship WHERE disposition_of_ship  =  'Captured'
 --------------------------------------------------
-Line 277 (unnecessary table joining + filtering using wrong column ):
+Line 277 (unnecessary table joining + wrong column in WHERE ):
 question: What are the notes of the death events which has substring 'East'
 filtered_preds.sql: SELECT death.note FROM death JOIN ship ON death.caused_by_ship_id = ship.id WHERE ship.location LIKE '%East%'
 filtered_dev.sql: SELECT note FROM death WHERE note LIKE '%East%'
 --------------------------------------------------
-Line 289 (missing distinct keyword):
+Line 289 (Miss a DISTINCT keyword):
 question: How many different degrees are offered?
 question answered correctly: How many different degree names are offered?
 filtered_preds.sql: SELECT COUNT( * ) FROM degree_programs
 filtered_dev.sql: SELECT count(DISTINCT degree_summary_name) FROM Degree_Programs
 --------------------------------------------------
-Line 296 (wrong column selection):
+Line 296 (wrong column in SELECT):
 question: What is the phone number of the man with the first name Timmothy and the last name Ward?
 question answered correctly: What is the mobile phone number of the student named Timmothy Ward ?
 filtered_preds.sql: SELECT students.ssn FROM students WHERE students.first_name = 'Timmothy' AND students.last_name = 'Ward'
 filtered_dev.sql: SELECT cell_mobile_number FROM Students WHERE first_name  =  'Timmothy' AND last_name  =  'Ward'
 --------------------------------------------------
-Line 300 (unnecessary table joining + different columns for ordering):
+Line 300 (wrong table in SELECT + wrong column in ORDER BY):
 question: Who is the earliest graduate of the school? List the first name, middle name and last name.
 filtered_preds.sql: SELECT students.first_name , students.middle_name , students.last_name FROM degree_programs JOIN student_enrolment ON degree_programs.degree_program_id = student_enrolment.degree_program_id JOIN students ON student_enrolment.student_id = students.student_id ORDER BY students.date_first_registered ASC LIMIT 1
 filtered_dev.sql: SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1
 --------------------------------------------------
-Line 301 (unnecessary table joining + wrong column for filtering + wrong column for ordering):
+Line 301 (wrong table in SELECT + wrong column in ORDER BY):
 question: What is the first, middle, and last name of the earliest school graduate?
 filtered_preds.sql: SELECT students.first_name , students.middle_name , students.last_name FROM students JOIN student_enrolment ON students.student_id = student_enrolment.student_id ORDER BY students.date_first_registered ASC LIMIT 1
 filtered_dev.sql: SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1
 --------------------------------------------------
-Line 302 (wrong filtering logic):
+Line 302 (Redundant column in SELECT + wrong column in WHERE):
 question: Whose permanent address is different from his or her current address? List his or her first name.
 question answered correctly: What is the first name of the student whose permanent address is different from his or her current one?
 filtered_preds.sql: SELECT students.first_name , students.permanent_address_id FROM students WHERE students.permanent_address_id IN (SELECT MAX( students.ssn ) FROM students)
 filtered_dev.sql: SELECT first_name FROM Students WHERE current_address_id != permanent_address_id
 --------------------------------------------------
-Line 304 (wrong column selection):
+Line 304 (wrong column in SELECT):
 question: On average, when were the transcripts printed?
 question answered correctly: What is the average transcript date?
 filtered_preds.sql: SELECT AVG( transcripts.other_details ) FROM transcripts
 filtered_dev.sql: SELECT avg(transcript_date) FROM Transcripts
 --------------------------------------------------
-Line 306 (selecting abundant column):
+Line 306 (column missing):
 question: When is the first transcript released? List the date and details.
 filtered_preds.sql: SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date ASC LIMIT 1
 filtered_dev.sql: SELECT transcript_date ,  other_details FROM Transcripts ORDER BY transcript_date ASC LIMIT 1
 --------------------------------------------------
-Line 307 (missing a column):
+Line 307 (column missing):
 question: What is the earliest date of a transcript release, and what details can you tell me?
 filtered_preds.sql: SELECT transcripts.transcript_date FROM transcripts ORDER BY transcripts.transcript_date ASC LIMIT 1
 filtered_dev.sql: SELECT transcript_date ,  other_details FROM Transcripts ORDER BY transcript_date ASC LIMIT 1
 --------------------------------------------------
-Line 308 (using different table):
+Line 308 (wrong table in SELECT):
 question: How many transcripts are released?
 filtered_preds.sql: SELECT COUNT( * ) FROM courses
 filtered_dev.sql: SELECT count(*) FROM Transcripts
 --------------------------------------------------
-Line 309 (using different table):
+Line 309 (wrong table in SELECT):
 question: How many transcripts are listed?
 filtered_preds.sql: SELECT COUNT( * ) FROM courses
 filtered_dev.sql: SELECT count(*) FROM Transcripts
 --------------------------------------------------
-Line 312 (selecting wrong columns + using different table):
+Line 312 (wrong table in SELECT):
 question: How many times at most can a course enrollment result show in different transcripts? Also show the course enrollment id.
 filtered_preds.sql: SELECT student_enrolment_courses.course_id , COUNT( * ) FROM student_enrolment_courses GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 313 (selecting wrong columns + using different table):
+Line 313 (wrong table in SELECT):
 question: What is the maximum number of times that a course shows up in different transcripts and what is that course's enrollment id?
 filtered_preds.sql: SELECT student_enrolment_courses.student_course_id , COUNT( * ) FROM courses JOIN transcript_contents ON courses.course_id = transcript_contents.student_course_id GROUP BY student_enrolment_courses.course_id ORDER BY COUNT( * ) DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1
 --------------------------------------------------
-Line 315 (missing count function):
+Line 315 (miss aggregation function):
 question: What are the different addresses that have students living there?
 question answered correctly: How many different addresses do the students currently live?
 filtered_preds.sql: SELECT DISTINCT students.current_address_id FROM students
 filtered_dev.sql: SELECT count(DISTINCT current_address_id) FROM Students
 --------------------------------------------------
-Line 316 (wrong column selection + soring order):
+Line 316 (wrong column in SELECT + wrong sorting direction):
 question: List all the student details in reversed lexicographical order.
 filtered_preds.sql: SELECT students.ssn FROM students ORDER BY students.other_student_details ASC
 filtered_dev.sql: SELECT other_student_details FROM Students ORDER BY other_student_details DESC
 --------------------------------------------------
-Line 317 (unnecessary table joining + sorting order + wrong column selection):
+Line 317 (wrong table in SELECT + wrong sorting direction):
 question: What other details can you tell me about students in reverse alphabetical order?
 filtered_preds.sql: SELECT student_enrolment.other_details FROM student_enrolment JOIN students ON student_enrolment.student_id = students.student_id ORDER BY student_enrolment.other_details ASC
 filtered_dev.sql: SELECT other_student_details FROM Students ORDER BY other_student_details DESC
 --------------------------------------------------
-Line 318 (wrong column selection):
+Line 318 (wrong column in SELECT):
 question: Describe the section h.
 question answered correctly: What is the description for the section named h?
 filtered_preds.sql: SELECT sections.section_name FROM sections WHERE sections.section_name = 'h'
 filtered_dev.sql: SELECT section_description FROM Sections WHERE section_name  =  'h'
 --------------------------------------------------
-Line 322 (wrong column selection):
+Line 322 (wrong column in SELECT):
 question: List all cartoon directed by \"Ben Jones\"."
 question answered correctly: What are the names of all cartoons directed by Ben Jones?
 filtered_preds.sql: SELECT cartoon.directed_by FROM cartoon WHERE cartoon.directed_by = 'Ben Jones'
 filtered_dev.sql: SELECT Title FROM Cartoon WHERE Directed_by = "Ben Jones";
 --------------------------------------------------
-Line 332 (missing distinct keyword + missing count operation):
+Line 332 (miss aggregation function + miss a DISTINCT keyword):
 question: List the number of different series names and contents in the TV Channel table.
 filtered_preds.sql: SELECT COUNT( DISTINCT tv_channel.series_name ) , tv_channel.content FROM tv_channel
 filtered_dev.sql: SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel;
 --------------------------------------------------
-Line 333 (missing distinct keyword + missing count operation):
+Line 333 (miss aggregation function + miss a DISTINCT keyword):
 question: How many different series and contents are listed in the TV Channel table?
 filtered_preds.sql: SELECT COUNT( DISTINCT tv_channel.series_name ) , tv_channel.content FROM tv_channel
 filtered_dev.sql: SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel;
 --------------------------------------------------
-Line 413 (wrong column selection):
+Line 413 (wrong column in SELECT):
 question: What is the total population and maximum GNP in Asia?
 filtered_preds.sql: SELECT SUM( country.population ) , MAX( country.gnp ) FROM country WHERE country.region = 'Asia'
 filtered_dev.sql: SELECT sum(Population) ,  max(GNP) FROM country WHERE Continent  =  "Asia"
 --------------------------------------------------
-Line 414 (missing operation + wrong column selection):
+Line 414 (miss aggregation function + wrong column in WHERE):
 question: How many people live in Asia, and what is the largest GNP among them?
 filtered_preds.sql: SELECT country.gnp FROM country WHERE country.region = 'Asia' ORDER BY country.gnp DESC LIMIT 1
 filtered_dev.sql: SELECT sum(Population) ,  max(GNP) FROM country WHERE Continent  =  "Asia"
 --------------------------------------------------
-Line 415 (wrong column selection):
+Line 415 (wrong column in WHERE):
 question: What is the average life expectancy in African countries that are republics?
 filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.region = 'African' AND country.governmentform = 'republic'
 filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  "Africa" AND GovernmentForm  =  "Republic"
 --------------------------------------------------
-Line 416 (wrong keyword selection):
+Line 416 (wrong key value error):
 question: Give the average life expectancy for countries in Africa which are republics?
 filtered_preds.sql: SELECT AVG( country.lifeexpectancy ) FROM country WHERE country.continent = 'Africa' AND country.governmentform = 'Africa'
 filtered_dev.sql: SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  "Africa" AND GovernmentForm  =  "Republic"
 --------------------------------------------------
-Line 417 (wrong column selection):
+Line 417 (wrong column in WHERE):
 question: What is the total surface area of the continents Asia and Europe?
 filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.continent = 'Asia' OR country.region = 'Europe'
 filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Continent  =  "Asia" OR Continent  =  "Europe"
 --------------------------------------------------
-Line 418 (wrong column selection):
+Line 418 (wrong column in WHERE):
 question: Give the total surface area covered by countries in Asia or Europe.
 filtered_preds.sql: SELECT SUM( country.surfacearea ) FROM country WHERE country.region = 'Asia' OR country.region = 'Europe'
 filtered_dev.sql: SELECT sum(SurfaceArea) FROM country WHERE Continent  =  "Asia" OR Continent  =  "Europe"
 --------------------------------------------------
-Line 421 (wrong keyword selection --> if case sensitive):
+Line 421 (wrong Key Value Error --> if case sensitive):
 question: What is the average GNP and total population in all nations whose government is US territory?
 filtered_preds.sql: SELECT AVG( country.gnp ) , SUM( country.population ) FROM country WHERE country.governmentform = 'US territory'
 filtered_dev.sql: SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  "US Territory"
 --------------------------------------------------
-Line 422 (wrong keyword selection --> if case sensitive):
+Line 422 (wrong column in WHERE):
 question: Give the mean GNP and total population of nations which are considered US territory.
 filtered_preds.sql: SELECT AVG( country.gnp ) , SUM( country.population ) FROM country WHERE country.region = 'US territory'
 filtered_dev.sql: SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  "US Territory"
 --------------------------------------------------
-Line 425 (wrong column selection):
+Line 425 (wrong column in WHERE):
 question: How many type of governments are in Africa?
 filtered_preds.sql: SELECT COUNT( DISTINCT country.governmentform ) FROM country WHERE country.region = 'Africa'
 filtered_dev.sql: SELECT count(DISTINCT GovernmentForm) FROM country WHERE Continent  =  "Africa"
 --------------------------------------------------
-Line 426 (wrong column selection):
+Line 426 (wrong column in WHERE):
 question: How many different forms of governments are there in Africa?
 filtered_preds.sql: SELECT COUNT( DISTINCT country.governmentform ) FROM country WHERE country.region = 'Africa'
 filtered_dev.sql: SELECT count(DISTINCT GovernmentForm) FROM country WHERE Continent  =  "Africa"
 --------------------------------------------------
-Line 435 (from different tables):
+Line 435 (wrong table in SELECT):
 question: What are the country codes for countries that do not speak English?
 filtered_preds.sql: SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'
 filtered_dev.sql: SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  "English"
 --------------------------------------------------
-Line 436 (from different tables):
+Line 436 (wrong table in SELECT):
 question: Return the country codes for countries that do not speak English.
 filtered_preds.sql: SELECT country.code FROM country EXCEPT SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'English'
 filtered_dev.sql: SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  "English"
 --------------------------------------------------
-Line 447 (different filtering sequence):
+Line 447 (miss aggregation function + ):
 question: Find the average life expectancy and total population for each continent where the average life expectancy is shorter than 72?
 filtered_preds.sql: SELECT country.continent , SUM( country.population ) FROM country WHERE country.lifeexpectancy<72 GROUP BY country.continent
 filtered_dev.sql: SELECT sum(Population) ,  avg(LifeExpectancy) ,  Continent FROM country GROUP BY Continent HAVING avg(LifeExpectancy)  <  72
 --------------------------------------------------
-Line 448 (different filtering sequence):
+Line 448 (miss aggregation function + ):
 question: What are the different continents and the total popuation and average life expectancy corresponding to each, for continents that have an average life expectancy less than 72?
 filtered_preds.sql: SELECT country.continent , SUM( country.population ) FROM country WHERE country.lifeexpectancy<72 GROUP BY country.continent
 filtered_dev.sql: SELECT sum(Population) ,  avg(LifeExpectancy) ,  Continent FROM country GROUP BY Continent HAVING avg(LifeExpectancy)  <  72
@@ -314,32 +314,32 @@ question: What is the total population and average area of countries in the cont
 filtered_preds.sql: SELECT SUM( country.population ) , AVG( country.surfacearea ) FROM country WHERE country.continent = 'North America' HAVING AVG( country.surfacearea ) > 3000
 filtered_dev.sql: select sum(population) ,  avg(surfacearea) from country where continent  =  "north america" and surfacearea  >  3000
 --------------------------------------------------
-Line 460 (where uses wrong columns):
+Line 460 (Redundant aggregation function):
 question: Give the total population and average surface area corresponding to countries in North America that have a surface area greater than 3000 .
 filtered_preds.sql: SELECT SUM( country.population ) , AVG( country.surfacearea ) FROM country WHERE country.region = 'North America' AND country.surfacearea > 3000
 filtered_dev.sql: select sum(population) ,  avg(surfacearea) from country where continent  =  "north america" and surfacearea  >  3000
 --------------------------------------------------
-Line 465 (just everything lol):
+Line 465 (miss a column in SELECT + miss aggregation function + wrong column in ORDER BY):
 question: What is the language spoken by the largest percentage of people in each country?
 filtered_preds.sql: SELECT countrylanguage.language FROM countrylanguage ORDER BY countrylanguage.percentage DESC LIMIT 1
 filtered_dev.sql: SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode
 --------------------------------------------------
-Line 466 (missing column selection):
+Line 466 (miss a column in SELECT):
 question: What are the country codes of the different countries, and what are the languages spoken by the greatest percentage of people for each?
 filtered_preds.sql: SELECT countrylanguage.countrycode , MAX( countrylanguage.percentage ) FROM countrylanguage GROUP BY countrylanguage.countrycode
 filtered_dev.sql: SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode
 --------------------------------------------------
-Line 467 (syntax error):
+Line 467 (Miss aggregation function):
 question: What is the total number of countries where Spanish is spoken by the largest percentage of people?
 filtered_preds.sql: SELECT COUNT( * ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish' ORDER BY countrylanguage.percentage DESC LIMIT 1
 filtered_dev.sql: SELECT count(*) ,   max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
-Line 468 (missing grouping + missing selecting column):
+Line 468 (Miss aggregation function + miss clause GROUP BY ):
 question: Count the number of countries for which Spanish is the predominantly spoken language.
 filtered_preds.sql: SELECT COUNT( * ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish'
 filtered_dev.sql: SELECT count(*) ,   max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
-Line 469:
+Line 469: (Miss aggregation function)
 question: What are the codes of countries where Spanish is spoken by the largest percentage of people?
 filtered_preds.sql: SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.language = 'Spanish' ORDER BY countrylanguage.percentage DESC LIMIT 1
 filtered_dev.sql: SELECT CountryCode ,  max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
@@ -349,26 +349,23 @@ question: Return the codes of countries for which Spanish is the predominantly s
 filtered_preds.sql: SELECT countrylanguage.countrycode FROM countrylanguage WHERE countrylanguage.percentage > (SELECT AVG( countrylanguage.percentage ) FROM countrylanguage WHERE countrylanguage.language = 'Spanish')
 filtered_dev.sql: SELECT CountryCode ,  max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  "Spanish" GROUP BY CountryCode
 --------------------------------------------------
-Line 547 (different operation functions):
+Line 547 (wrong aggregation function):
 question: How much does the most expensive charge type costs?
 filtered_preds.sql: SELECT SUM( charges.charge_amount ) FROM charges ORDER BY charges.charge_type DESC LIMIT 1
 filtered_dev.sql: SELECT max(charge_amount) FROM Charges
 --------------------------------------------------
-Line 548 (different operation functions):
-question: What is the charge amount of the most expensive charge type?
-filtered_preds.sql: SELECT charges.charge_amount FROM charges ORDER BY charges.charge_type DESC LIMIT 1
-filtered_dev.sql: SELECT max(charge_amount) FROM Charges
---------------------------------------------------
-Line 551:
+Line 551 (wrong column in SELECT):
 question: What are all the possible breed type and size type combinations?
 question answered correctly: Find the distinct breed type and size type combinations for dogs."
 filtered_preds.sql: SELECT DISTINCT breeds.breed_name , sizes.size_description FROM breeds JOIN dogs ON breeds.breed_code = dogs.breed_code JOIN sizes ON dogs.size_code = sizes.size_code
 filtered_dev.sql: SELECT DISTINCT breed_code ,  size_code FROM dogs
 --------------------------------------------------
+(wrong sorting direction)
 question: List the section_name in reversed lexicographical order.
 filtered_preds.sql: SELECT sections.section_name FROM sections ORDER BY sections.section_name ASC	student_transcripts_tracking
 filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	student_transcripts_tracking
 --------------------------------------------------
+(wrong sorting direction)
 question: What are the names of the sections in reverse alphabetical order?
 filtered_preds.sql: SELECT sections.section_name FROM sections ORDER BY sections.section_name ASC	student_transcripts_tracking
 filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	student_transcripts_tracking
