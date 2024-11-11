@@ -1,37 +1,43 @@
-from sql_metadata import Parser
+import json
+import re
 
-def is_single_table_query(sql_query):
-    """
-    Check if the SQL query involves only one unique table.
-    """
-    # Create a Parser instance with the SQL query
-    parser = Parser(sql_query)
-    # Extract table names from the parser
-    table_names = parser.tables
-    # Return True if only one unique table is found
-    return len(set(table_names)) == 1
+# Load table data from tables.json
+def load_tables(json_path):
+    with open(json_path, 'r') as file:
+        data = json.load(file)
+    # Extract table names and structure it as a set
+    table_names = set()
+    for db in data:
+        table_names.update(db["table_names"])
+    return table_names
 
+# Extract single-table queries based on tables.json data
+def extract_single_table_queries(sql_path, tables):
+    with open(sql_path, 'r') as file:
+        sql_queries = file.readlines()
 
-def process_preds_file(input_file, output_file):
-    """
-    Process the preds.sql file and write queries involving only one table to the output file.
-    """
-    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
-        for line in infile:
-            line = line.strip()
-            if not line:
-                continue
-            # Split the line to separate the SQL query and the database name
-            if '\t' in line:
-                sql_query, db_name = line.rsplit('\t', 1)
-            else:
-                sql_query = line
-            # Check if the query involves only one table
-            if is_single_table_query(sql_query):
-                outfile.write('' + line + '\n')
+    single_table_queries = []
+    
+    for query in sql_queries:
+        tables_in_query = set(re.findall(r'\bFROM\b\s+(\w+)|\bJOIN\b\s+(\w+)', query, re.IGNORECASE))
+        tables_in_query = set([table for match in tables_in_query for table in match if table])
+        
+        if len(tables_in_query) == 1 and tables_in_query.issubset(tables):
+            single_table_queries.append(query)
 
-if __name__ == '__main__':
-    input_file = 'dev_gold.sql'           
-    output_file = 'filtered_dev.sql' 
-    process_preds_file(input_file, output_file)
-    print(f"Filtered queries have been written to {output_file}")
+    return single_table_queries
+
+def save_filtered_queries(filtered_queries, output_path):
+    with open(output_path, 'w') as file:
+        for query in filtered_queries:
+            file.write(query + "\n")  
+
+json_path = 'tables.json'
+sql_path = 'preds_train.sql'
+output_path = 'filtered_train.sql'
+
+tables = load_tables(json_path)
+single_table_queries = extract_single_table_queries(sql_path, tables)
+
+save_filtered_queries(single_table_queries, output_path)
+print(f"Filtered single-table queries have been saved to {output_path}")

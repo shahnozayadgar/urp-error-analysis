@@ -367,7 +367,7 @@ filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	s
 --------------------------------------------------
 (wrong sorting direction)
 question: What are the names of the sections in reverse alphabetical order?
-filtered_preds.sql: SELECT sections.section_name FROM sections ORDER BY sections.section_name ASC	student_transcripts_tracking
+filtere d_preds.sql: SELECT sections.section_name FROM sections ORDER BY sections.section_name ASC	student_transcripts_tracking
 filtered_dev.sql: SELECT section_name FROM Sections ORDER BY section_name DESC	student_transcripts_tracking
 --------------------------------------------------
 Wrong column in ___ 31 instances 
