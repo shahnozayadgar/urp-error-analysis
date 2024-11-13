@@ -30,11 +30,11 @@ def extract_single_table_queries(sql_path, tables):
 def save_filtered_queries(filtered_queries, output_path):
     with open(output_path, 'w') as file:
         for query in filtered_queries:
-            file.write(query + "\n")  
+             file.write(query.strip() + "\n")
 
 json_path = 'tables.json'
-sql_path = 'preds_train.sql'
-output_path = 'filtered_train.sql'
+sql_path = 'train_gold.sql'
+output_path = 'filtered_train_gold_current.sql'
 
 tables = load_tables(json_path)
 single_table_queries = extract_single_table_queries(sql_path, tables)
