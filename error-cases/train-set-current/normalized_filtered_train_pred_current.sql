@@ -613,6 +613,8 @@ SELECT DISTINCT reign FROM wrestler WHERE location != 'Tokyo,Japan'	wrestler
 SELECT DISTINCT reign FROM wrestler WHERE location != 'Tokyo, Japan'	wrestler
 SELECT name , location FROM wrestler	wrestler
 SELECT name , location FROM wrestler	wrestler
+SELECT elimination.team , COUNT( * ) FROM elimination GROUP BY elimination.team	wrestler
+SELECT elimination.team , COUNT( * ) FROM elimination GROUP BY elimination.team	wrestler
 SELECT team FROM elimination GROUP BY team HAVING COUNT( * ) > 3	wrestler
 SELECT team FROM elimination GROUP BY team HAVING COUNT( * ) > 3	wrestler
 SELECT reign , days_held FROM wrestler	wrestler
@@ -623,8 +625,6 @@ SELECT reign FROM wrestler GROUP BY reign ORDER BY COUNT( * ) DESC LIMIT 1	wrest
 SELECT reign FROM wrestler GROUP BY reign ORDER BY COUNT( * ) DESC LIMIT 1	wrestler
 SELECT location FROM wrestler GROUP BY location HAVING COUNT( * ) > 2	wrestler
 SELECT location FROM wrestler GROUP BY location HAVING COUNT( * ) > 2	wrestler
-SELECT team FROM elimination WHERE eliminated_by = 'Orton' INTERSECT SELECT team FROM elimination WHERE eliminated_by = 'Benjamin'	wrestler
-SELECT team FROM elimination WHERE eliminated_by = 'Orton' INTERSECT SELECT team FROM elimination WHERE eliminated_by = 'Benjamin'	wrestler
 SELECT COUNT( DISTINCT team ) FROM elimination	wrestler
 SELECT COUNT( DISTINCT team ) FROM elimination	wrestler
 SELECT time FROM elimination WHERE eliminated_by = 'Punk' OR eliminated_by = 'Orton'	wrestler
